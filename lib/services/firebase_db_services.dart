@@ -36,16 +36,12 @@ catch(e){
 deleteCompany(String docid)async{
   await companyCollection.doc(docid).delete().then((value) => print("deleted sucessfully")).onError((error, stackTrace) => print("error is $error and stack is $stackTrace"),);
 }
-addCompany({required company})async {
+addCompany(Company company)async {
 
   try {
-      await companyCollection.add({
-        "name": company.name??"no name",
-        "address": company.address,
-        "phone": company.phone,
-        "established": company.established,
-        "services": company.services,
-      });
+      await companyCollection.add(
+        company.toJson()
+      );
       print("Company added successfully");
     } catch (e) {
       print("Error adding company: $e");
@@ -53,5 +49,14 @@ addCompany({required company})async {
   }
 
 
-  editCompany() {}
+  updateCompany(Company company) async {
+  try {
+    await companyCollection.doc(company.id).update(company.toJson());
+    print("Company updated successfully");
+  } catch (e) {
+    print("Error updating company: $e");
+  }
+}
+
+ 
 }

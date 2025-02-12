@@ -1,4 +1,5 @@
 import 'package:database_demo/model/company.dart';
+import 'package:database_demo/screen/add_company.dart';
 
 import 'package:database_demo/services/firebase_db_services.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,9 @@ class CompanyHome extends StatelessWidget {
               subtitle: Text(allCompanies[index].address!),
               leading: PopupMenuButton(
                 onSelected: (value)async{
-                  if(value=="edit"){
+                  if(value=="edit")
+                  {
+                    Navigator.push(context,MaterialPageRoute(builder: (context)=>AddCompany(company: allCompanies[index],)));
 
                   }else{
                     await FirebaseDbServices().deleteCompany(allCompanies[index].id!);
@@ -45,6 +48,8 @@ class CompanyHome extends StatelessWidget {
                   value: "edit"),
                   PopupMenuItem(child: Text("delete"),
                   value: "delete"),
+                  PopupMenuItem(child: Text("update"),
+                  value: "update",),
                 
 
 
@@ -59,6 +64,16 @@ class CompanyHome extends StatelessWidget {
           return Center(child: CircularProgressIndicator(),);
          }
       }),
+      floatingActionButton: FloatingActionButton(onPressed: (){
+
+        Navigator.push(context, MaterialPageRoute(builder:(_)=>AddCompany()));
+        
+      },
+      child: Icon(Icons.add)
+      ),
+
+
+
     );
   }
 }
